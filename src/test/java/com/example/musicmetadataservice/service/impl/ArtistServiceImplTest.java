@@ -12,11 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.data.domain.Sort;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -222,7 +219,7 @@ class ArtistServiceImplTest {
         artist.setId(1L);
         artist.setName("Artist 1");
         List<Artist> artists = List.of(artist);
-        when(artistRepository.findAll()).thenReturn(artists);
+        when(artistRepository.findAll(any(Sort.class))).thenReturn(artists);
 
         Artist result = artistService.getArtistOfTheDay();
 
@@ -244,13 +241,14 @@ class ArtistServiceImplTest {
         artists.add(Artist.builder().name("Artist 9").alias("Alias 9").build());
         artists.add(Artist.builder().name("Artist 10").alias("Alias 10").build());
 
-        when(artistService.geDayDifferentForArtistOfTheDay()).thenReturn(2L);
-        when(artistRepository.findAll()).thenReturn(artists);
+        when(artistService.getDayDifferentForArtistOfTheDay()).thenReturn(2);
+        when(artistRepository.findAll(any(Sort.class))).thenReturn(artists);
+
 
         assertEquals("Artist 3", artistService.getArtistOfTheDay().getName());
 
 
-        when(artistService.geDayDifferentForArtistOfTheDay()).thenReturn(9L);
+        when(artistService.getDayDifferentForArtistOfTheDay()).thenReturn(9);
         assertEquals("Artist 10", artistService.getArtistOfTheDay().getName());
     }
 }

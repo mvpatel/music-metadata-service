@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class ArtistControllerIntegrationTest {
 
     @Autowired
@@ -217,6 +220,14 @@ class ArtistControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test Artist of The Day 1"))
                 .andExpect(jsonPath("$.aliases[0]").value("Test Alias of The Day 1"));
+    }
+
+    @Test
+    void testGetArtistOfTheDay_WhenNoArtistIsAvailable() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/artists/artist-of-the-day")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("No artist is available for the day"));
     }
 
     @Test

@@ -26,8 +26,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @ExceptionHandler(NoArtistAvailableException.class)
+    public ResponseEntity<Object> handleNoArtistAvailableException(NoArtistAvailableException ex, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGeneralException(Exception ex, WebRequest request) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Internal Server Error occurred while processing your request.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Internal Server Error occurred while processing your request.");
     }
 }

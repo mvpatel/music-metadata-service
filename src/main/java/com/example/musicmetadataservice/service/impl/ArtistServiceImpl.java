@@ -6,8 +6,8 @@ import com.example.musicmetadataservice.model.Artist;
 import com.example.musicmetadataservice.repository.ArtistRepository;
 import com.example.musicmetadataservice.service.ArtistService;
 import jakarta.persistence.EntityExistsException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -56,16 +56,18 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist getArtistOfTheDay() {
-        List<Artist> allArtists = artistRepository.findAll();
+        List<Artist> allArtists = artistRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+
         if (allArtists.isEmpty()) {
             throw new NoArtistAvailableException("No artist is available for the day");
         }
-        return allArtists.get((int) (geDayDifferentForArtistOfTheDay() % allArtists.size()));
+
+        return allArtists.get(getDayDifferentForArtistOfTheDay() % allArtists.size());
     }
 
-    public long geDayDifferentForArtistOfTheDay() {
+    public int getDayDifferentForArtistOfTheDay() {
         LocalDate startDate = LocalDate.of(2024, 5, 10);
-        return ChronoUnit.DAYS.between(startDate, LocalDate.now());
+        return (int) ChronoUnit.DAYS.between(startDate, LocalDate.now());
     }
 
     @Override
