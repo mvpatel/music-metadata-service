@@ -5,13 +5,17 @@ import com.example.musicmetadataservice.model.Artist;
 import com.example.musicmetadataservice.repository.ArtistRepository;
 import com.example.musicmetadataservice.repository.TrackRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,13 +31,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ArtistControllerIntegrationTest {
 
     @Autowired
-    ArtistRepository artistRepository;
-    @Autowired
-    TrackRepository trackRepository;
-    @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    ArtistRepository artistRepository;
+
+    @Autowired
+    TrackRepository trackRepository;
 
     @BeforeEach
     public void cleanup() {
@@ -108,7 +115,6 @@ class ArtistControllerIntegrationTest {
                 .andExpect(jsonPath("$.name").value("Updated Artist Name"))
                 .andExpect(jsonPath("$.aliases[0]").value("Updated Alias"));
     }
-
     @Test
     void testUpdateArtist_WhenIdNotMatched_ShouldThrowError() throws Exception {
 
@@ -196,7 +202,6 @@ class ArtistControllerIntegrationTest {
                 .andExpect(jsonPath("$[1].name").value("Test Artist 12"))
                 .andExpect(jsonPath("$[1].aliases[0]").value("Test Alias 12"));
     }
-
     @Test
     void testGetArtistOfTheDay() throws Exception {
 
