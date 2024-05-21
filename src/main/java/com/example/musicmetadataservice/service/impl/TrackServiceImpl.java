@@ -4,7 +4,6 @@ import com.example.musicmetadataservice.exception.ResourceNotFoundException;
 import com.example.musicmetadataservice.model.Track;
 import com.example.musicmetadataservice.repository.TrackRepository;
 import com.example.musicmetadataservice.service.TrackService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
