@@ -19,8 +19,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ArtistServiceImplTest {
 
@@ -125,7 +130,7 @@ class ArtistServiceImplTest {
     @Test
     void testUpdateArtist_ArtistExistsByName() {
 
-        
+
         Long artistId = 1L;
         String existingName = "Existing Artist";
         String updatedName = "Updated Artist";
@@ -214,7 +219,7 @@ class ArtistServiceImplTest {
 
     @Test
     void testGetArtistOfTheDayWhenOneArtist() {
-        
+
         Artist artist = new Artist();
         artist.setId(1L);
         artist.setName("Artist 1");
